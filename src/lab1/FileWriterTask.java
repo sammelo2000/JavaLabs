@@ -1,42 +1,50 @@
 package lab1;
-import  java.io.*;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import java.io.File;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+
+/*
+Name : Samuel Williams
+StudentId : 21001277
+Computer Science and Software Engineering.
+ */
 
 public class FileWriterTask {
     public static void main(String[] arg) {
+        System.out.println("Enter File Name:");
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter the filename: ");
         String fileName = scan.nextLine();
+        File file = new File(fileName);
+
         try {
-            File fileObj = new File(fileName);
-            if(fileObj.createNewFile()) {
-                System.out.println(fileObj.getName() + " has been created.");
-            }else {
-                System.out.println("The File already exists");
+            if (file.exists()) {
+                System.out.println("File exist,Appending to File....");
+                FileWriter fW = new FileWriter(file, true);
+                BufferedWriter bW = new BufferedWriter(fW);
+                PrintWriter pW = new PrintWriter(bW);
+                System.out.println("Add Input");
+                String inPt = scan.nextLine();
+                pW.println(inPt);
+                pW.flush();
+
+                System.out.println("Input Data as been Append to the file.");
+                pW.close();
+                bW.close();
+                fW.close();
+
+            } else if (file.createNewFile()) {
+                FileWriter fWriter = new FileWriter(file);
+                System.out.println("Input text");
+                String inputText = scan.nextLine();
+                fWriter.write(inputText);
+                System.out.println("File Creation was a Success and your input has been written to it. ");
+                fWriter.close();
             }
-            FileWriter writeToFile = new FileWriter(fileName,true);
-            System.out.println("Type Text");
-            String strText = scan.nextLine();
-            writeToFile.append("\n").append(strText);
-            writeToFile.close();
-            System.out.println("File written to successfully ");
-
-//            while (true){
-//                System.out.println("To append to existing file, press 1 and to exit program press 2");
-//                int input = scan.nextInt();
-//                if (input == 1) {
-//                    System.out.println("Enter new Text:");
-//                    String strInput = scan.nextLine();
-//                    writeToFile.append(strInput);
-//                }else {
-//                    break;
-//                }
-//            }
-
-        }
-        catch (IOException e) {
-            System.out.println("IOException occurred");
+        } catch (IOException e) {
+            System.out.println("IO Exception caught");
         }
 
     }

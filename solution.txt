@@ -1,0 +1,5 @@
+Samuel Williams
+21001277
+The minimum number is : -5
+The maximum number is : 345
+The average is : 61.3

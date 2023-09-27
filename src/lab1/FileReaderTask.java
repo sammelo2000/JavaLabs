@@ -1,26 +1,46 @@
 package lab1;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-import java.io.*;
+import java.io.File;
+
+/*
+Name : Samuel Williams
+StudentId : 21001277
+Computer Science and Software Engineering.
+ */
 
 public class FileReaderTask {
-    public static void main(String[] arg) {
+    public static void main(String[] args) {
+        // Getting input from user
+        System.out.print("Enter the File Name :");
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter File Name");
-        String str = scan.nextLine();
+        String fileName = scan.nextLine();
+        // Using File Object to check if file exists
+        File file = new File(fileName);
+        boolean exists = file.exists();
 
-        File file = new File (str);
+        int numOfLines = 0;
         try {
-            Scanner sc = new Scanner(file);
-            while (sc.hasNextLine()) {
-                System.out.println(sc.nextLine());
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String str;
+
+            if (exists) {
+                // br is using the readLine method to read each line and when there is nothing left to read the while loop stops.
+                while ((str = br.readLine()) != null) {
+                    System.out.println(str);
+                    numOfLines++;
+                }
+            } else {
+                throw new IOException();
             }
+            br.close();
+            System.out.println("Number of lines: " + numOfLines);
+        } catch (IOException e) {
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-
+            System.out.println("File Not Found");
         }
-
-
 
     }
 }

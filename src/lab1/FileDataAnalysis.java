@@ -2,44 +2,78 @@ package lab1;
 
 import java.util.*;
 import java.io.*;
-
+import java.io.IOException;
+/*
+Name : Samuel Williams
+StudentId : 21001277
+Computer Science and Software Engineering.
+ */
 public class FileDataAnalysis {
     public static void main(String[] arg) {
-        int count = 0;
+        System.out.print("Enter the File Name :");
         Scanner scan = new Scanner(System.in);
-//        System.out.println("Enter File Name");
-//        String str = scan.nextLine();
+        String fileName = scan.nextLine();
+        System.out.println("Enter your FullName:");
+        String fullName = scan.nextLine();
+        System.out.println("Enter Student ID");
+        String studentId = scan.nextLine();
+        File file = new File(fileName);
+        boolean exists = file.exists();
+        ArrayList < Integer > arr = new ArrayList < > ();
+        int sum = 0;
 
-        File file = new File ("value.txt");
         try {
-            Scanner sc = new Scanner(file);
-            ArrayList<Integer> arr = new ArrayList<>();
-            while (sc.hasNextLine()) {
-                arr.add(Integer.parseInt(sc.nextLine()));
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String str;
+
+            if (exists) {
+                while ((str = br.readLine()) != null) {
+                    arr.add(Integer.parseInt(str));
+
+                }
+            } else {
+                throw new IOException();
             }
+            br.close();
 
+        } catch (IOException e) {
 
-
-
-            int min = Collections.min(arr);
-            int max = Collections.max(arr);
-            System.out.println(min);
-            System.out.println(max);
-            int sum=0;
-            for (Integer integer : arr) {
-                sum += integer;
+            System.out.println("File Not Found");
+        }
+        for (int x: arr) {
+            sum += x;
+        }
+        double avg = (double) sum / arr.size();
+        String strAvg = "The average is : " + avg;
+        int min = arr.get(0);
+        for (int x: arr) {
+            if (min <= x) {} else {
+                min = x;
             }
-            double avg = sum / arr.size();
-            System.out.println(avg);
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-
+        }
+        String strMin = "The minimum number is : " + min;
+        int max = arr.get(0);
+        for (int x: arr) {
+            if (max >= x) {} else {
+                max = x;
+            }
         }
 
+        String strMax = "The maximum number is : " + max;
 
+        File file1 = new File("solution.txt");
 
-
+        try {
+            FileWriter fileWriter = new FileWriter(file1);
+            fileWriter.write(fullName + "\n");
+            fileWriter.write(studentId + "\n");
+            fileWriter.write(strMin + "\n");
+            fileWriter.write(strMax + "\n");
+            fileWriter.write(strAvg + "\n");
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println("IO Exception caught.");
+        }
 
     }
 }
